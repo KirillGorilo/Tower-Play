@@ -13,28 +13,49 @@ RED = (255, 0, 0)
 FPS = 60
 clock = pygame.time.Clock()
 
+sp = None
+
+sc.fill(WHITE)
+pygame.display.update()
+
 x = W // 2
 y = H // 2
 speed = 5
 
-
+pygame.mouse.set_visible(False)
 
 while 1:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit()
 
-    keys = pygame.key.get_pressed()
-
-    if keys[pygame.K_LEFT]:
-        x -= speed
-    elif keys[pygame.K_RIGHT]:
-        x += speed
-
-
     sc.fill(WHITE)
-    pygame.draw.rect(sc, BLUE, (x, y, 10, 20))
+
+    pos = pygame.mouse.get_pos()
+    if pygame.mouse.get_focused():
+        pygame.draw.circle(sc, BLUE, pos, 7)
+
+    pressed = pygame.mouse.get_pressed()
+    if pressed[0]:
+
+        if sp is None:
+            sp = pos
+
+        width = pos[0] - sp[0]
+        height = pos[1] - sp[1]
+
+        sc.fill(WHITE)
+        pygame.draw.rect(sc, RED, (sp[0], sp[1], width, height ))
+    else:
+        sp = None
     pygame.display.update()
+
+
+
+
+
+
+
 
 
     clock.tick(FPS)
